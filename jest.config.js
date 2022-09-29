@@ -12,5 +12,4 @@ module.exports = {
   collectCoverageFrom: ['src/*.js', 'src/**/*.js', '!src/**/*.test.js', '!src/index.js'],
   coverageReporters: ['json', 'text', 'lcov'],
   moduleDirectories: ['node_modules', 'src'],
-  testRegex: 'tests/.*\\.test\\.js$',
 };
