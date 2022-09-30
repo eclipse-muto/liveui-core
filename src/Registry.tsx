@@ -27,7 +27,7 @@ let _renderer = function defaultRenderer() {
 export function register(
   packages,
   externalComponents,
-  externalRenderer = undefined
+  externalRenderer
 ) {
   externals = packages;
   components = externalComponents;

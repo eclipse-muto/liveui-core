@@ -18,23 +18,48 @@ import {
   renderer,
   register,
   modules,
-  require,
+  _require,
   getComponentUrl,
 } from '../Registry';
 
+import {initializeApp} from '../index';
+
 describe('remote', () => {
+  test('initializeApp', () => {
+    expect(renderer()).toThrow();
+
+    initializeApp({
+      shares: {
+        "renderer": renderer,
+      },
+      remotes: {
+        "Test": "http://localhost/test",
+      },
+      renderer: ()=>{}
+    });
+    expect(getComponentUrl("Test")).toBe( "http://localhost/test");
+    expect(modules()).toBeDefined();
+
+    const register = jest.fn();
+    expect(register).toHaveBeenCalledTimes(0);
+  });
+
   test('register throw', () => {
     const register = jest.fn();
     expect(register).toHaveBeenCalledTimes(0);
   });
 
-  it('modules', () => {
-    const testExternals = {};
-    expect(modules()).toEqual(testExternals);
-  });
-
   it('renderer throw', () => {
-    expect(renderer()).toThrow();
+    initializeApp({
+      shares: {
+        "renderer": renderer,
+      },
+      remotes: {
+        "Test": "http://localhost/test",
+      },
+      renderer: ()=>{}
+    });
+    expect(renderer()).toBeDefined();
   });
 
   it('require throw', () => {
@@ -42,13 +67,13 @@ describe('remote', () => {
     const externals = { test: 'test' };
 
     function requireError() {
-      require(module);
+      _require(module);
     }
     try {
       register(externals, requireError);
-      expect(require(module)).toEqual(externals[module]);
+      expect(_require(module)).toEqual(externals[module]);
     } catch (e) {
-      expect(requireError).toThrowError(Error);
+      expect(_require).toThrowError(Error);
     }
   });
 
@@ -57,7 +82,7 @@ describe('remote', () => {
     const externals = { test: 'test' };
 
     function requireError() {
-      require(module);
+      _require(module);
     }
     register('module_name', externals, requireError);
     expect(getComponentUrl(module)).toEqual(externals[module]);
@@ -67,11 +92,12 @@ describe('remote', () => {
     const externals = { test: 'test' };
 
     function requireError() {
-      require(module);
+      _require(module);
     }
     try {
       register(externals, requireError);
-      expect(require(module, requireError)).toBe(externals[module]);
+      expect(_require(module, requireError)).toBe(externals[module]);
+      expect(_require(module, requireError)).toBe(externals[module]);
     } catch (e) {
       expect(requireError).toThrowError(Error);
     }

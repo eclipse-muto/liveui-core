@@ -21,7 +21,7 @@ let config;
 
 function initializeApp(_config) {
   config = _config;
-  Registry.register(config.shares, config.remotes);
+  Registry.register(config.shares, config.remotes, config.renderer);
 }
 
 const liveui = { ViewBuilder, Registry, initializeApp, config };

@@ -9,7 +9,7 @@ module.exports = {
   },
   coverageDirectory: 'coverage',
   collectCoverage: true,
-  collectCoverageFrom: ['src/*.js', 'src/**/*.js', '!src/**/*.test.js', '!src/index.js'],
+  collectCoverageFrom: ['src/*.ts', 'src/**/*.tsx', 'src/*.js', 'src/**/*.js', '!src/**/*.test.js', '!src/index.js'],
   coverageReporters: ['json', 'text', 'lcov'],
   moduleDirectories: ['node_modules', 'src'],
 };
